@@ -1,0 +1,4419 @@
+{
+	"info": {
+		"_postman_id": "b80674bc-51d1-4f3b-ae11-2a37a5d8d610",
+		"name": "teamer_api_tests_v3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "users",
+			"description": "",
+			"item": [
+				{
+					"name": "User registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6b7f4108-bdad-4761-90d8-108236cd358e",
+								"type": "text/javascript",
+								"exec": [
+									"//collect email from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"email\", jsonData.email);",
+									"//collect user_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"user_id\", jsonData.id);",
+									"",
+									"",
+									"//debug",
+									"var jsonData;",
+									"try {",
+									"    jsonData = JSON.parse(responseBody);",
+									"} catch (err) {",
+									"    console.log(err);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\": {  \n\t   \"first_name\":\"Postman\",\n\t   \"last_name\":\"Tester\",\n\t   \"email\":\"{{$timestamp}}@abh.com\",\n\t   \"phone\":\"0999 {{$randomInt}} {{$randomInt}}\",\n\t   \"country_code\":\"au\",\n\t   \"city\":\"Sydney\",\n\t   \"password\":\"testtest\",\n\t   \"password_confirmation\":\"testtest\",\n\t   \"birth_year\":\"1987\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/users",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a1660b74-58fb-4deb-94df-4d489c0e2f1b",
+								"type": "text/javascript",
+								"exec": [
+									"//collect token from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.single_access_token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "testtest",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/auth/login",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "35dbf78d-7264-43ae-8c46-1e230890b955",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\": {  \n\t   \"first_name\":\"Postman\",\n\t   \"last_name\":\"Tester\",\n\t   \"email\":\"{{$timestamp}}@abh.com\",\n\t   \"country_code\":\"au\",\n\t   \"city\":\"Sydney\",\n\t   \"password\":\"testtest\",\n\t   \"password_confirmation\":\"testtest\",\n\t   \"birth_year\":\"1987\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/users/{{user_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9448b170-283e-4640-b16c-479243e6449a",
+								"type": "text/javascript",
+								"exec": [
+									"//collect email from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"email\", jsonData.email);",
+									"//collect user_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"user_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\": {  \n\t   \"first_name\":\"Tester\",\n\t   \"last_name\":\"Postman\",\n\t   \"email\":\"{{$timestamp}}@abh.ba\",\n\t   \"country_code\":\"au\",\n\t   \"city\":\"Melbourne\",\n\t   \"password\":\"testtest\",\n\t   \"password_confirmation\":\"testtest\",\n\t   \"birth_year\":\"1988\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/users/{{user_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "countries",
+			"description": "",
+			"item": [
+				{
+					"name": "Get countries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b4c4e276-e487-41d5-aff3-0a170391bf2b",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/countries",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"countries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get country options",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": "Access token for authentication"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teams/country_options?country=ie",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teams",
+								"country_options"
+							],
+							"query": [
+								{
+									"key": "country",
+									"value": "ie"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "clubs",
+			"description": "",
+			"item": [
+				{
+					"name": "Create club",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e6187381-1915-49fa-a6ac-2aeec652358e",
+								"type": "text/javascript",
+								"exec": [
+									"//collect club_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"club_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"club\": {  \n\t   \"name\":\"Postman API Test Club {{$timestamp}}\",\n\t   \"sport\":\"Basketball\",\n\t   \"address\":\"Kingsway, Miranda NSW, Australia\",\n\t   \"country_code\":\"au\",\n\t   \"state\":\"New South Wales\",\n\t   \"city\":\"Sydney\",\n\t   \"timezone\":\"Europe/Dublin\",\n\t   \"primary_color\":\"#581845\",\n\t   \"secondary_color\":\"#FFC300\",\n\t   \"subdomain\":\"postmanapitestclub{{$timestamp}}\",\n\t   \"members_can_see_each_other_info\":true,\n\t   \"lat\":-33.865143,\n\t   \"lng\":151.209900,\n\t   \"place_id\":\"ChIJP5iLHkCuEmsRwMwyFmh9AQU\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/clubs",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"clubs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user club memberships",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce6e7a24-7a81-42f7-80e5-ee107acb872d",
+								"type": "text/javascript",
+								"exec": [
+									"//collect logged_member_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"logged_member_id_2\", jsonData[0].id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/users/{{user_id}}/club_memberships",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"{{user_id}}",
+								"club_memberships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get club",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba4dd48f-19d1-4235-bc4e-216ae38e78c3",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/clubs/{{club_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"clubs",
+								"{{club_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get club info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/clubs/{{club_id}}/info",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"clubs",
+								"{{club_id}}",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit club",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"club\": {  \n\t   \"name\":\"Postman API Edited Club {{$timestamp}}\",\n\t   \"sport\":\"Hockey\",\n\t   \"address\":\"Ontario Science Centre, Don Mills Road, North York, ON, Canada\",\n\t   \"country_code\":\"ca\",\n\t   \"state\":\"Ontario\",\n\t   \"city\":\"Otawa\",\n\t   \"timezone\":\"Europe/London\",\n\t   \"primary_color\":\"#fffab5\",\n\t   \"secondary_color\":\"#C9FFC7\",\n\t   \"subdomain\":\"postmanapitestclubedited{{$timestamp}}\",\n\t   \"members_can_see_each_other_info\":false,\n\t   \"lat\":45.41117,\n\t   \"lng\":-75.69812,\n\t   \"place_id\":\"ChIJrxNRX7IFzkwR7RXdMeFRaoo\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/clubs/{{club_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"clubs",
+								"{{club_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create TIC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a76e338e-c8f6-465b-b6e8-763685d8b5ae",
+								"type": "text/javascript",
+								"exec": [
+									"//collect tic_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"tic_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"club_id\":{{club_id}},\n\t\"team\": {  \n\t   \"name\":\"API Test Postman TIC\",\n\t   \"sport\":\"Soccer\",\n\t   \"city\":\"Dublin\",\n\t   \"country_code\":\"ie\",\n\t   \"state_province\":\"Dublin\",\n\t   \"country\":\"Ireland\",\n\t   \"gender\":\"c\",\n\t   \"age_profile\":3,\n\t   \"timezone\":\"Europe/Dublin\",\n\t   \"public_contact_info\":true,\n\t   \"all_members_can_upload_photos\":true,\n\t   \"teamtalk_posts_only_available_to_organisers\":false\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teams",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get club's teams",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/clubs/{{club_id}}/teams",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"clubs",
+								"{{club_id}}",
+								"teams"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "club_news",
+			"description": "",
+			"item": [
+				{
+					"name": "Get club news categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "38f250d8-9060-4150-a487-8bdb65736456",
+								"type": "text/javascript",
+								"exec": [
+									"//collect club_news_categories from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"club_news_categories\", jsonData[0].id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[title]",
+									"value": "API TEST News Title",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[headline]",
+									"value": "API TEST News Headline!!!",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[content]",
+									"value": "API TEST News Content",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[photo]",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_news/categories?club_id={{club_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_news",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create single news",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ae826003-bf01-42c7-8f3d-48451ba90119",
+								"type": "text/javascript",
+								"exec": [
+									"//collect news_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"news_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[title]",
+									"value": "API TEST News Title",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[headline]",
+									"value": "API TEST News Headline!!!",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[content]",
+									"value": "API TEST News Content",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[news_category_ids]",
+									"value": "{{club_news_categories}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[photo]",
+									"description": "",
+									"type": "file"
+								},
+								{
+									"key": "news[publish_at]",
+									"value": "1561020280",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_news",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single news",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "978d916e-f387-4693-ab70-0fd3a4d24d3e",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[title]",
+									"value": "API TEST News Title",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[headline]",
+									"value": "API TEST News Headline!!!",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[content]",
+									"value": "API TEST News Content",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[photo]",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_news/{{news_id}}?club_id={{club_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_news",
+								"{{news_id}}"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get club news",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "978d916e-f387-4693-ab70-0fd3a4d24d3e",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[title]",
+									"value": "API TEST News Title",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[headline]",
+									"value": "API TEST News Headline!!!",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[content]",
+									"value": "API TEST News Content",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[photo]",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_news?club_id={{club_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_news"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update single news",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fb339255-6de6-4c8b-a72e-8398e7d082b9",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[title]",
+									"value": "API TEST News Title Updated",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[headline]",
+									"value": "API TEST News Headline Updated!!!",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[content]",
+									"value": "API TEST News Content Updated",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[photo]",
+									"description": "",
+									"type": "file"
+								},
+								{
+									"key": "news[news_category_ids]",
+									"value": "{{club_news_categories}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "news[publish_at]",
+									"value": "1592642680",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_news/{{news_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_news",
+								"{{news_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publish single news",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fb339255-6de6-4c8b-a72e-8398e7d082b9",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_news/{{news_id}}/publish?club_id={{club_id}}&news_id={{news_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_news",
+								"{{news_id}}",
+								"publish"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}"
+								},
+								{
+									"key": "news_id",
+									"value": "{{news_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ubpublish single news",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fb339255-6de6-4c8b-a72e-8398e7d082b9",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_news/{{news_id}}/unpublish?club_id={{club_id}}&news_id={{news_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_news",
+								"{{news_id}}",
+								"unpublish"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}"
+								},
+								{
+									"key": "news_id",
+									"value": "{{news_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete single news",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "978d916e-f387-4693-ab70-0fd3a4d24d3e",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_news/{{news_id}}?club_id={{club_id}}&news_id={{news_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_news",
+								"{{news_id}}"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}"
+								},
+								{
+									"key": "news_id",
+									"value": "{{news_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "club_articles",
+			"description": "",
+			"item": [
+				{
+					"name": "Create club's article",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "65a3d300-4c4e-401d-b373-7e06ca092601",
+								"type": "text/javascript",
+								"exec": [
+									"//collect article_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"article_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "article[title]",
+									"value": "API TEST TITLE",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "article[content]",
+									"value": "API TEST CONTENT",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "article[photo]",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_articles",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update club's article",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "article_id",
+									"value": "{{article_id}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "club_id",
+									"value": "{{club_id}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "article[title]",
+									"value": "API TEST TITLE EDITED!!!",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "article[content]",
+									"value": "API TEST CONTENT EDITED !!!",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "article[photo]",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_articles/{{article_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_articles",
+								"{{article_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete club's custom section",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_articles/{{article_id}}?club_id={{club_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_articles",
+								"{{article_id}}"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "{{club_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "club_google_analytics",
+			"description": "",
+			"item": [
+				{
+					"name": "Create club GA tracking ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "ZOznFpQin4L5qZEw9JLi"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "25711428"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_google_analytics?club_id=2454&ga_tracking_id=UA-121096165-1",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_google_analytics"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "2454",
+									"description": "https://clubforapigatesting.teamerstg.net/premium"
+								},
+								{
+									"key": "ga_tracking_id",
+									"value": "UA-121096165-1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get club GA tracking ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "ZOznFpQin4L5qZEw9JLi"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "25711428"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_google_analytics?club_id=2454",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_google_analytics"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "2454",
+									"description": "https://clubforapigatesting.teamerstg.net/premium"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update club GA tracking ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "ZOznFpQin4L5qZEw9JLi"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "25711428"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_google_analytics?club_id=2454&ga_tracking_id=UA-121096165-2",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_google_analytics"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "2454",
+									"description": "https://clubforapigatesting.teamerstg.net/premium"
+								},
+								{
+									"key": "ga_tracking_id",
+									"value": "UA-121096165-2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get club GA tracking ID Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "ZOznFpQin4L5qZEw9JLi"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "25711428"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/club_google_analytics?club_id=2454",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"club_google_analytics"
+							],
+							"query": [
+								{
+									"key": "club_id",
+									"value": "2454",
+									"description": "https://clubforapigatesting.teamerstg.net/premium"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "teams",
+			"description": "",
+			"item": [
+				{
+					"name": "Create TOC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "40571360-b573-4334-b514-6d1bca88c0d2",
+								"type": "text/javascript",
+								"exec": [
+									"//collect team_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"team_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team\": {  \n\t   \"name\":\"API Test Postman\",\n\t   \"sport\":\"Soccer\",\n\t   \"city\":\"Dublin\",\n\t   \"country_code\":\"ie\",\n\t   \"state_province\":\"Dublin\",\n\t   \"country\":\"Ireland\",\n\t   \"gender\":\"c\",\n\t   \"age_profile\":5,\n\t   \"timezone\":\"Europe/Dublin\",\n\t   \"public_contact_info\":true,\n\t   \"all_members_can_upload_photos\":true,\n\t   \"teamtalk_posts_only_available_to_organisers\":false\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teams",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user team memberships",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dbc28f1f-6493-4b44-b78e-6b48f69cb7aa",
+								"type": "text/javascript",
+								"exec": [
+									"//collect logged_member_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"logged_member_id\", jsonData[0].id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/users/{{user_id}}/teams/{{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"{{user_id}}",
+								"teams",
+								"{{team_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit TOC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "314d3ea2-5867-44cd-89a2-4c57b837c87a",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team\": {  \n\t   \"name\":\"API Test Postman (edited)\",\n\t   \"sport\":\"Basketball\",\n\t   \"city\":\"NY\",\n\t   \"country_code\":\"us\",\n\t   \"state_province\":\"New York\",\n\t   \"country\":\"United States\",\n\t   \"gender\":\"m\",\n\t   \"age_profile\":4,\n\t   \"timezone\":\"Eastern Time (US \\u0026 Canada)\",\n\t   \"public_contact_info\":false,\n\t   \"all_members_can_upload_photos\":false,\n\t   \"teamtalk_posts_only_available_to_organisers\":true\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teams/{{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teams",
+								"{{team_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "members",
+			"description": "",
+			"item": [
+				{
+					"name": "Create member TOC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c5df7672-d470-4d19-83ff-b7c0a373040f",
+								"type": "text/javascript",
+								"exec": [
+									"//collect member_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"member_id\", jsonData.id);",
+									"//collect group_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"group_id\", jsonData.group_ids[0]);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"member\": {\n\t\t\"first_name\":\"Member\",\n\t\t\"last_name\":\"Memberovic_1\",\n\t\t\"email\":\"{{$timestamp}}@abh.com\",\n\t\t\"group_ids\":\"2\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create member user TOC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a8aaaee6-455c-4428-bcdd-0faa6d438803",
+								"type": "text/javascript",
+								"exec": [
+									"//collect member_user_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"member_user_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"member_id\":\"{{member_id}}\",\n\t\"user\": {\n\t\t\"first_name\":\"Member (u)\",\n\t\t\"last_name\":\"Memberovic (u)\",\n\t\t\"email\":\"{{$timestamp}}@abh.com\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members/{{member_id}}/users",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members",
+								"{{member_id}}",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update member user TOC",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "43ea8ace-6412-40b4-972c-8be10f779597",
+								"type": "text/javascript",
+								"exec": [
+									"//create random string variable",
+									"var text=\"str_\";",
+									"var charset = \"abcdefghijklmnopqrstuvwxyz0123456789\";",
+									"",
+									"    for( var i=0; i < 8; i++ )",
+									"        text += charset.charAt(Math.floor(Math.random() * charset.length));",
+									"       ",
+									"postman.setEnvironmentVariable(\"random_string\", text);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"user\": {\n\t\t\"first_name\":\"Member (u) Edited\",\n\t\t\"last_name\":\"Memberovic (u) Edited\",\n\t\t\"email\":\"{{random_string}}@abhedited.com\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members/{{member_id}}/users/{{member_user_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members",
+								"{{member_id}}",
+								"users",
+								"{{member_user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get members TOC",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"member\": {\n\t\t\"first_name\":\"Member\",\n\t\t\"last_name\":\"Memberovic_1\",\n\t\t\"email\":\"{{$timestamp}}@abh.com\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get member TOC",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"member\": {\n\t\t\"first_name\":\"Member\",\n\t\t\"last_name\":\"Memberovic_1\",\n\t\t\"email\":\"{{$timestamp}}@abh.com\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members/{{member_id}}?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members",
+								"{{member_id}}"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit member TOC",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "79ca1a92-3bb3-46a4-ad1b-0a29545e15b1",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setNextRequest('Delete member user TOC')"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"member\": {\n\t\t\"first_name\":\"Edited Member\",\n\t\t\"last_name\":\"Edited Memberovic_1\",\n\t\t\"email\":\"{{$timestamp}}@abh_edited.com\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members/{{member_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members",
+								"{{member_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set member as currently active",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b3d6c437-7fc6-4575-990b-37c0acadcc59",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"club_id\":\"{{team_id}}\",\n\t\"member_id\":\"{{club_member_id}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members/{{member_id}}/set_as_current",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members",
+								"{{member_id}}",
+								"set_as_current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove member from team group TOC",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "84fa606c-d0d2-4ede-b5f4-c3e6147621de",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members/{{member_id}}/group/{{group_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members",
+								"{{member_id}}",
+								"group",
+								"{{group_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete member user TOC",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "84fa606c-d0d2-4ede-b5f4-c3e6147621de",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members/{{member_id}}/users/{{member_user_id}}?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members",
+								"{{member_id}}",
+								"users",
+								"{{member_user_id}}"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete member TOC",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members/{{member_id}}?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members",
+								"{{member_id}}"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "events",
+			"description": "",
+			"item": [
+				{
+					"name": "Create event TOC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e6c3de8a-44fb-462f-9172-2f596f95246f",
+								"type": "text/javascript",
+								"exec": [
+									"//collect event_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"event_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"event\": {  \n\t   \"event_type\":\"Game\",\n\t   \"starts_at\":\"1558604954\",\n\t   \"venue\":\"Game venue\",\n\t   \"opponent\":\"Postman\",\n\t   \"description\":\"Test note\",\n\t   \"has_meetup\":true,\n\t   \"meets_at\":\"1558604954\",\n\t   \"meet_location\":\"Meetup location\",\n\t   \"send_opponent_game_notification\":true,\n\t   \"opponent_email\":\"opponent@abh.com\",\n\t   \"address\":\"Test Success, West 32nd Street, New York, NY, United States\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/events",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event TOC",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/events/{{event_id}}?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"events",
+								"{{event_id}}"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get events TOC",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json\\"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/events?team_id={{team_id}}&view=upcoming",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"events"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "view",
+									"value": "upcoming"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit event TOC",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"event\": {  \n\t   \"event_type\":\"Game\",\n\t   \"starts_at\":\"1560242656\",\n\t   \"venue\":\"Game venue edited\",\n\t   \"opponent\":\"Postman Edited\",\n\t   \"description\":\"Test note edited\",\n\t   \"has_meetup\":true,\n\t   \"meets_at\":\"1560242656\",\n\t   \"meet_location\":\"Meetup edited\",\n\t   \"send_opponent_game_notification\":true,\n\t   \"opponent_email\":\"opponent@abhedited.com\",\n\t   \"address\":\"Edited, Hartenstraat, Amsterdam, Netherlands\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/events/{{event_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"events",
+								"{{event_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel event TOC",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"event_id\":\"{{event_id}}\",\n\t\"event\": {  \n\t   \"cancellation_reason\":\"Injury\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/events/{{event_id}}/cancel",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"events",
+								"{{event_id}}",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete event TOC",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "28e6608b-7d91-4984-b51c-9af80bd06d3b",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/events/{{event_id}}?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"events",
+								"{{event_id}}"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "notifications",
+			"description": "Positions of endpoints shouldn't be changed in order for notification tests to work properly.",
+			"item": [
+				{
+					"name": "Create member TOC (for notification endpoints)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c5df7672-d470-4d19-83ff-b7c0a373040f",
+								"type": "text/javascript",
+								"exec": [
+									"//collect member_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"member_id\", jsonData.id);",
+									"//collect group_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"group_id\", jsonData.group_ids[0]);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"member\": {\n\t\t\"first_name\":\"Member\",\n\t\t\"last_name\":\"Memberovic_1\",\n\t\t\"email\":\"{{$timestamp}}@abh.com\",\n\t\t\"phone\":\"083 289 4728\",\n\t\t\"group_ids\":\"2\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create member TOC (for notification endpoints)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c5df7672-d470-4d19-83ff-b7c0a373040f",
+								"type": "text/javascript",
+								"exec": [
+									"//collect member_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"member_id\", jsonData.id);",
+									"//collect group_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"group_id\", jsonData.group_ids[0]);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"member\": {\n\t\t\"first_name\":\"Member\",\n\t\t\"last_name\":\"Memberovic_2\",\n\t\t\"email\":\"{{$timestamp}}@abh.com\",\n\t\t\"phone\":\"083 289 4729\",\n\t\t\"group_ids\":\"2\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/members",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create event TOC (for notification endpoints)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e6c3de8a-44fb-462f-9172-2f596f95246f",
+								"type": "text/javascript",
+								"exec": [
+									"//collect event_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"event_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"event\": {  \n\t   \"event_type\":\"Game\",\n\t   \"starts_at\":\"1558604954\",\n\t   \"venue\":\"Game venue\",\n\t   \"opponent\":\"Postman\",\n\t   \"description\":\"Test note\",\n\t   \"has_meetup\":true,\n\t   \"meets_at\":\"1558604954\",\n\t   \"meet_location\":\"Meetup location\",\n\t   \"send_opponent_game_notification\":true,\n\t   \"opponent_email\":\"opponent@abh.com\",\n\t   \"address\":\"Test Success, West 32nd Street, New York, NY, United States\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/events",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event notifications primary (TOC)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications?event_id={{event_id}}&team_id={{team_id}}&filter=primary_and_squad_and_standby",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								},
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "filter",
+									"value": "primary_and_squad_and_standby"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move all members to lineup (TOC)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/move_all?team_id={{team_id}}&event_id={{event_id}}&to=team",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"move_all"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								},
+								{
+									"key": "to",
+									"value": "team"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event notifications lineup (TOC)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "69a603ea-c13c-4382-8716-a0d8d7d25b0e",
+								"type": "text/javascript",
+								"exec": [
+									"//collect event_notification_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"event_notification_id\", jsonData[0].id);",
+									"//collect event_notification_id2 from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"event_notification_id2\", jsonData[1].id);",
+									"//collect event_notification_id3 from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"event_notification_id3\", jsonData[2].id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications?event_id={{event_id}}&team_id={{team_id}}&filter=lineup",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								},
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "filter",
+									"value": "lineup"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move all members to squad (TOC)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/move_all?team_id={{team_id}}&event_id={{event_id}}&to=available_squad",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"move_all"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								},
+								{
+									"key": "to",
+									"value": "available_squad"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move member to standby (TOC)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/{{event_notification_id}}/move?team_id={{team_id}}&notification_id={{event_notification_id}}&to=alternates&event_id={{event_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"{{event_notification_id}}",
+								"move"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "notification_id",
+									"value": "{{event_notification_id}}"
+								},
+								{
+									"key": "to",
+									"value": "alternates"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move member to standby (TOC)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/{{event_notification_id2}}/move?team_id={{team_id}}&notification_id={{event_notification_id2}}&to=alternates&event_id={{event_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"{{event_notification_id2}}",
+								"move"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "notification_id",
+									"value": "{{event_notification_id2}}"
+								},
+								{
+									"key": "to",
+									"value": "alternates"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move member to standby (TOC)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/{{event_notification_id3}}/move?team_id={{team_id}}&notification_id={{event_notification_id3}}&to=alternates&event_id={{event_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"{{event_notification_id3}}",
+								"move"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "notification_id",
+									"value": "{{event_notification_id3}}"
+								},
+								{
+									"key": "to",
+									"value": "alternates"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event notifications standby (TOC)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications?event_id={{event_id}}&team_id={{team_id}}&filter=standby",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								},
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "filter",
+									"value": "standby"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reposition members",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"event_id\":{{event_id}},\n\t\"ids\": [\n    \t\t{{event_notification_id3}},\n    \t\t{{event_notification_id2}},\n    \t\t{{event_notification_id}}\n  \t\t]\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/reposition?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"reposition"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move all members to squad (TOC)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/move_all?team_id={{team_id}}&event_id={{event_id}}&to=available_squad&filter=standby",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"move_all"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								},
+								{
+									"key": "to",
+									"value": "available_squad"
+								},
+								{
+									"key": "filter",
+									"value": "standby"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move member to standby (TOC)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/{{event_notification_id}}/move?team_id={{team_id}}&notification_id={{event_notification_id}}&to=alternates&event_id={{event_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"{{event_notification_id}}",
+								"move"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "notification_id",
+									"value": "{{event_notification_id}}"
+								},
+								{
+									"key": "to",
+									"value": "alternates"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Move member to lineup (TOC)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/{{event_notification_id2}}/move?team_id={{team_id}}&notification_id={{event_notification_id2}}&to=team&event_id={{event_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"{{event_notification_id2}}",
+								"move"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "notification_id",
+									"value": "{{event_notification_id2}}"
+								},
+								{
+									"key": "to",
+									"value": "team"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update standby notify by phones",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/{{event_notification_id}}/update_standby_notify_by_phone?team_id={{team_id}}&event_id={{event_id}}&notification_id={{event_notification_id}}&toggle_to=true",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"{{event_notification_id}}",
+								"update_standby_notify_by_phone"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								},
+								{
+									"key": "notification_id",
+									"value": "{{event_notification_id}}"
+								},
+								{
+									"key": "toggle_to",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update all notify by phones",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/notifications/update_all_notify_by_phone?team_id={{team_id}}&event_id={{event_id}}&toggle_to=true&filter=lineup",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"notifications",
+								"update_all_notify_by_phone"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}"
+								},
+								{
+									"key": "toggle_to",
+									"value": "true"
+								},
+								{
+									"key": "filter",
+									"value": "lineup"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c3de52a4-858c-4053-a0e4-184d21c98b96",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "274c26e3-f3cc-433d-9860-fbc6a18744fc",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "gallery",
+			"description": "",
+			"item": [
+				{
+					"name": "Create new photo or video",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "22230ed6-2ea3-4047-8302-46853a41a7f1",
+								"type": "text/javascript",
+								"exec": [
+									"//collect media_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"media_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "api test",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "api test",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/gallery?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"gallery"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get photo or video",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/gallery?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"gallery"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update photo or video",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/gallery/{{media_id}}?team_id={{team_id}}&id={{media_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"gallery",
+								"{{media_id}}"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								},
+								{
+									"key": "id",
+									"value": "{{media_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete photo or video",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/gallery/{{media_id}}?id={{media_id}}&team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"gallery",
+								"{{media_id}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{media_id}}"
+								},
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "teamtalks",
+			"description": "",
+			"item": [
+				{
+					"name": "Create teamtalk TOC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2bf9225e-b788-4377-8243-e4375f61e7d8",
+								"type": "text/javascript",
+								"exec": [
+									"//collect teamtalk_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"teamtalk_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"teamtalk\":{\n\t   \"title\":\"TestTalk title Postman\",\n\t   \"body\":\"TestTalk description Postman {{$timestamp}}\",\n\t   \"member_id\":\"{{member_id}}\",\n\t   \"receive_comment_notifications\":true,\n\t   \"requires_response\":true,\n\t   \"turn_off_comments\":false\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get teamtalks TOC",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"teamtalk\":{\n\t   \"title\":\"TestTalk title Postman\",\n\t   \"body\":\"TestTalk description Postman\",\n\t   \"member_id\":\"{{member_id}}\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit teamtalk TOC",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"teamtalk\":{\n\t   \"title\":\"TestTalk title Edited\",\n\t   \"body\":\"TestTalk description Edited {{$timestamp}}\",\n\t   \"member_id\":\"{{member_id}}\",\n\t   \"receive_comment_notifications\":true,\n\t   \"requires_response\":true,\n\t   \"turn_off_comments\":false\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks/{{teamtalk_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks",
+								"{{teamtalk_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get teamtalk TOC",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks/{{teamtalk_id}}?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks",
+								"{{teamtalk_id}}"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create teamtalk comment TOC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3513fe95-e6fb-4c53-89b4-d8b46b5f2e75",
+								"type": "text/javascript",
+								"exec": [
+									"//collect teamtalk_comment_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"teamtalk_comment_id\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"team_id\":\"{{team_id}}\",\n\t\"teamtalk_comment\":{\n\t   \"body\":\"TestTalk comment {{$timestamp}}\",\n\t   \"member_id\":\"{{member_id}}\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks/{{teamtalk_id}}/comments",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks",
+								"{{teamtalk_id}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get teamtalk comments TOC",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks/{{teamtalk_id}}/comments?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks",
+								"{{teamtalk_id}}",
+								"comments"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update member preferences TOC",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "receive_notifications",
+									"value": "true",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "team_id",
+									"value": "{{team_id}}",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks/{{teamtalk_id}}/member_preferences",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks",
+								"{{teamtalk_id}}",
+								"member_preferences"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all notifications TOC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "30aa19fd-8f47-4789-aa50-a537a557d3da",
+								"type": "text/javascript",
+								"exec": [
+									"//collect notification_id from the request and add it to env variables",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"notification_id\", jsonData[0].id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks/{{teamtalk_id}}/notifications?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks",
+								"{{teamtalk_id}}",
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send teamtalk notification TOC ",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks/{{teamtalk_id}}/notifications/{{notification_id}}?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks",
+								"{{teamtalk_id}}",
+								"notifications",
+								"{{notification_id}}"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete teamtalk comment TOC",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks/{{teamtalk_id}}/comments/{{teamtalk_comment_id}}?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks",
+								"{{teamtalk_id}}",
+								"comments",
+								"{{teamtalk_comment_id}}"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete teamtalk TOC",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/teamtalks/{{teamtalk_id}}?team_id={{team_id}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"teamtalks",
+								"{{teamtalk_id}}"
+							],
+							"query": [
+								{
+									"key": "team_id",
+									"value": "{{team_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "force_update",
+			"description": "",
+			"item": [
+				{
+					"name": "Check if mobile application needs to be upgraded (IOS)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": ""
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/force_update?Teamer-App-Request=iPhone&major&minor&maintenance",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"force_update"
+							],
+							"query": [
+								{
+									"key": "Teamer-App-Request",
+									"value": "iPhone"
+								},
+								{
+									"key": "major",
+									"value": null
+								},
+								{
+									"key": "minor",
+									"value": null
+								},
+								{
+									"key": "maintenance",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check if mobile application needs to be upgraded (Android)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": ""
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/force_update?Teamer-App-Request=Android&major=4&minor=0&maintenance=10",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"force_update"
+							],
+							"query": [
+								{
+									"key": "Teamer-App-Request",
+									"value": "Android"
+								},
+								{
+									"key": "major",
+									"value": "4"
+								},
+								{
+									"key": "minor",
+									"value": "0"
+								},
+								{
+									"key": "maintenance",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "reset_password",
+			"description": "",
+			"item": [
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Logged-Member-Id",
+								"value": "{{logged_member_id_2}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://{{host}}/api/v3/reset_password?email_or_phone={{email}}",
+							"protocol": "https",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"reset_password"
+							],
+							"query": [
+								{
+									"key": "email_or_phone",
+									"value": "{{email}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete TOC",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Logged-Member-Id",
+						"value": "{{logged_member_id}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://{{host}}/api/v3/teams/{{team_id}}",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v3",
+						"teams",
+						"{{team_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Club",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Logged-Member-Id",
+						"value": "{{logged_member_id_2}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://{{host}}/api/v3/clubs/{{club_id}}",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v3",
+						"clubs",
+						"{{club_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "28093ff1-701b-42ec-acee-b115bb916f49",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "4fc88b07-63d1-4f34-84c2-bc2edfb5963f",
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Successful request\", function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200,201,202,204]);",
+					"});"
+				]
+			}
+		}
+	]
+}
